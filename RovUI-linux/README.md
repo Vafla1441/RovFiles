@@ -16,7 +16,9 @@ LIBS += -L../SFML-2.4.1/lib/ \
         -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 ```
 `INCLUDEPATH` - путь до заголовков .h / .hpp
+
 `LIBS` - путь до библиотек
+
 Для компиляции используйте скрипт `sh run.txt`
 
 ## Запуск
