@@ -74,6 +74,7 @@ void HighROV::run() {
         Thrusters::update_thrusters(control, telimetry);
         RotaryCameras::set_angle(config::servos::front, constrain(control.cameraRotation[0], -1, 1) * 3.0);
         RotaryCameras::set_angle(config::servos::back,  constrain(control.cameraRotation[1], -1, 1) * 3.0);
+        RotaryCameras::set_angle(config::servos::pwm_a2,  constrain(control.cameraRotation[2], -1, 1) * 3.0);
         RotaryCameras::select_cam(control.cameraIndex == 1 ? true : false);
         Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
     } else {
