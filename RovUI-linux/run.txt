@@ -1,0 +1,3 @@
+make clean
+qmake RovUI.pro
+make -j$(nproc)
