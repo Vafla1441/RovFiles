@@ -8,7 +8,7 @@ public:
     static int get_cam_index();
 private:
     static RotaryCameras &inst();
-    int angles[3] = { 90, 90, 90 };
+    int angles[3] = { 90, 90, 60 };
     long long times_update[3] = { 0, 0, 0 };
     bool cam_switch = false;
 };
