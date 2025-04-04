@@ -3,7 +3,7 @@
 #include <QVideoWidget>
 #include <QStackedWidget>
 #include <QMediaPlayer>
-#include <QCameraViewfinder>
+#include <QMediaPlaylist>
 
 class RovCameraWidget : public QStackedWidget {
     Q_OBJECT
@@ -16,10 +16,9 @@ public slots:
     void stopCapture();
 
 private:
-    void cleanupPlayer();
     void setupVideoOutput();
+    void cleanupPlayer();
 
     QScopedPointer<QMediaPlayer> m_player;
     QScopedPointer<QVideoWidget> m_videoWidget;
-    const QUrl m_streamUrl{"rtsp://192.168.1.6/stream=0"};
 };

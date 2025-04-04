@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = RovUI1.0.0
-DISTDIR = /home/kirill/1MATE_ROV_2025/RovUI-linux/src/.tmp/RovUI1.0.0
+DISTDIR = /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/.tmp/RovUI1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -pipe -O2 -flto=8 -fno-fat-lto-objects -fuse-linker-plugin -Wl,-rpath-link,/usr/lib -fPIC
 LIBS          = $(SUBLIBS) -L../SFML-2.4.1/lib/ -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network /usr/lib/libQt5MultimediaWidgets.so /usr/lib/libQt5Multimedia.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so -lGL -lpthread   
@@ -168,10 +168,13 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_lib_vulkan_support_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_widgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_widgets_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_x11extras.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_x11extras_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xkbcommon_support_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_phonon4qt5.pri \
 		/usr/lib/qt/mkspecs/features/qt_functions.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
@@ -307,10 +310,13 @@ Makefile: src.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspecs/f
 		/usr/lib/qt/mkspecs/modules/qt_lib_vulkan_support_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_widgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_widgets_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_x11extras.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_x11extras_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xkbcommon_support_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_phonon4qt5.pri \
 		/usr/lib/qt/mkspecs/features/qt_functions.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
@@ -410,10 +416,13 @@ Makefile: src.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspecs/f
 /usr/lib/qt/mkspecs/modules/qt_lib_vulkan_support_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_widgets.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_widgets_private.pri:
+/usr/lib/qt/mkspecs/modules/qt_lib_x11extras.pri:
+/usr/lib/qt/mkspecs/modules/qt_lib_x11extras_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xkbcommon_support_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xml.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xml_private.pri:
+/usr/lib/qt/mkspecs/modules/qt_phonon4qt5.pri:
 /usr/lib/qt/mkspecs/features/qt_functions.prf:
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
@@ -547,22 +556,22 @@ moc_MainWindow.cpp: MainWindow.hpp \
 		../SFML-2.4.1/include/SFML/Window/WindowStyle.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include MainWindow.hpp -o moc_MainWindow.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include MainWindow.hpp -o moc_MainWindow.cpp
 
 moc_RovTelimetryWidget.cpp: RovTelimetryWidget.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovTelimetryWidget.hpp -o moc_RovTelimetryWidget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovTelimetryWidget.hpp -o moc_RovTelimetryWidget.cpp
 
 moc_RovCameraWidget.cpp: RovCameraWidget.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovCameraWidget.hpp -o moc_RovCameraWidget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovCameraWidget.hpp -o moc_RovCameraWidget.cpp
 
 moc_ScaleFactorWidget.cpp: ScaleFactorWidget.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include ScaleFactorWidget.hpp -o moc_ScaleFactorWidget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include ScaleFactorWidget.hpp -o moc_ScaleFactorWidget.cpp
 
 moc_SfJoystick.cpp: SfJoystick.hpp \
 		SfJoystickSettingsDialog.hpp \
@@ -609,7 +618,7 @@ moc_SfJoystick.cpp: SfJoystick.hpp \
 		../SFML-2.4.1/include/SFML/Window/WindowStyle.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include SfJoystick.hpp -o moc_SfJoystick.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include SfJoystick.hpp -o moc_SfJoystick.cpp
 
 moc_SfJoystickSettingsDialog.cpp: SfJoystickSettingsDialog.hpp \
 		../SFML-2.4.1/include/SFML/Window.hpp \
@@ -655,7 +664,7 @@ moc_SfJoystickSettingsDialog.cpp: SfJoystickSettingsDialog.hpp \
 		../SFML-2.4.1/include/SFML/Window/WindowStyle.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include SfJoystickSettingsDialog.hpp -o moc_SfJoystickSettingsDialog.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include SfJoystickSettingsDialog.hpp -o moc_SfJoystickSettingsDialog.cpp
 
 moc_RovSingleton.cpp: RovSingleton.hpp \
 		RovDataTypes.hpp \
@@ -665,29 +674,29 @@ moc_RovSingleton.cpp: RovSingleton.hpp \
 		CallOnce.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovSingleton.hpp -o moc_RovSingleton.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovSingleton.hpp -o moc_RovSingleton.cpp
 
 moc_RovUdpConnection.cpp: RovUdpConnection.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovUdpConnection.hpp -o moc_RovUdpConnection.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RovUdpConnection.hpp -o moc_RovUdpConnection.cpp
 
 moc_RegulatorsWidget.cpp: RegulatorsWidget.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RegulatorsWidget.hpp -o moc_RegulatorsWidget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include RegulatorsWidget.hpp -o moc_RegulatorsWidget.cpp
 
 moc_DebugDialog.cpp: DebugDialog.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include DebugDialog.hpp -o moc_DebugDialog.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include DebugDialog.hpp -o moc_DebugDialog.cpp
 
 moc_LogWidget.cpp: LogWidget.hpp \
 		RovDataTypes.hpp \
 		Crc.hpp \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include LogWidget.hpp -o moc_LogWidget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src -I/home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/SFML-2.4.1/include -I/usr/include/qt -I/usr/include/qt/QtMultimediaWidgets -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/14.2.1 -I/usr/include/c++/14.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/14.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include-fixed -I/usr/include LogWidget.hpp -o moc_LogWidget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
