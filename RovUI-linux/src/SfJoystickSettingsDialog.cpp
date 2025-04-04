@@ -273,9 +273,9 @@ void SfJoystickSettingsDialog::readSettings()
     m_xAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickAxisX", static_cast<int>(sf::Joystick::Axis::X)).toInt());
     m_yAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickAxisY", static_cast<int>(sf::Joystick::Axis::Y)).toInt());
     m_zAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickAxisZ", static_cast<int>(sf::Joystick::Axis::Z)).toInt());
-    m_servoXAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickServoXAxis", static_cast<int>(sf::Joystick::Axis::PovX)).toInt());
-    m_servoYAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickServoYAxis", static_cast<int>(sf::Joystick::Axis::PovY)).toInt());
-    m_servoZAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickServoZAxis", static_cast<int>(sf::Joystick::Axis::PovX)).toInt());
+    m_servoXAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickServoXAxis", static_cast<int>(sf::Joystick::Axis::PovY)).toInt());
+    m_servoYAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickServoYAxis", static_cast<int>(sf::Joystick::Axis::X)).toInt());
+    m_servoZAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickServoZAxis", static_cast<int>(sf::Joystick::Axis::Y)).toInt());
     m_manipulatorAxis = static_cast<sf::Joystick::Axis>(m_settings->value("JoystickManipulatorAxis", static_cast<int>(sf::Joystick::Axis::U)).toInt());
 
     m_isWInv = m_settings->value("JoystickAxisWIsInv", false).toBool();

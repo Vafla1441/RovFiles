@@ -137,11 +137,11 @@ void SfJoystick::timerEvent(QTimerEvent*)
         RovSingleton::instance()->control().manipulatorRotation = 0;
     }
 
-//    qDebug() << "\tX: " << xAxis()
-//             << "\tY: " << yAxis()
-//             << "\tZ: " << zAxis()
-//             << "\tW: " << wAxis()
-//             << "\t cam: " << RovSingleton::instance()->control().cameraIndex;
+   // qDebug() << "\tX: " << servoXAxis()
+   //          << "\tY: " << servoYAxis()
+   //          << "\tZ: " << servoZAxis()
+   //          << "\tW: " << wAxis()
+   //          << "\t cam: " << RovSingleton::instance()->control().cameraIndex;
 }
 
 bool SfJoystick::isConnected()

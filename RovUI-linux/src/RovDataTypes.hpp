@@ -4,6 +4,7 @@
 #include <QDataStream>
 #include <QIODevice>
 #include <QtCore>
+#include <QDebug>
 
 struct RovControl {
     static const uint8_t header_control = 0xAC; // only v2 and later
@@ -86,6 +87,9 @@ struct RovControl {
 
         in << calculateCRC(ba.data(), ba.size());
 
+        qDebug() << "\t" << cameraRotation[0]
+                 << "\t" << cameraRotation[1]
+                 << "\t" << cameraRotation[2];
         return ba;
     }
 };

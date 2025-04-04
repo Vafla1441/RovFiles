@@ -30,54 +30,54 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = RovUI1.0.0
-DISTDIR = /home/kirill/1MATE_ROV_2025/RovUI-linux/.tmp/RovUI1.0.0
+DISTDIR = /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/.tmp/RovUI1.0.0
 SUBTARGETS    =  \
 		sub-src-src-pro
 
 
 sub-src-src-pro-qmake_all:  FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro
+	cd src/ && $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro
 	cd src/ && $(MAKE) -f Makefile qmake_all
 sub-src-src-pro: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile
 sub-src-src-pro-make_first-ordered: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile 
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile 
 sub-src-src-pro-make_first: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile 
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile 
 sub-src-src-pro-all-ordered: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile all
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile all
 sub-src-src-pro-all: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile all
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile all
 sub-src-src-pro-clean-ordered: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile clean
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile clean
 sub-src-src-pro-clean: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile clean
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile clean
 sub-src-src-pro-distclean-ordered: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile distclean
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile distclean
 sub-src-src-pro-distclean: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile distclean
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile distclean
 sub-src-src-pro-install_subtargets-ordered: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile install
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile install
 sub-src-src-pro-install_subtargets: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile install
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile install
 sub-src-src-pro-uninstall_subtargets-ordered: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile uninstall
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile uninstall
 sub-src-src-pro-uninstall_subtargets: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile uninstall
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile uninstall
 
 Makefile: RovUI.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -282,12 +282,12 @@ uninstall_subtargets: sub-src-src-pro-uninstall_subtargets-ordered FORCE
 
 sub-src-src-pro-check_ordered:
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile check
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile check
 check: sub-src-src-pro-check_ordered
 
 sub-src-src-pro-benchmark_ordered:
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile benchmark
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -f Makefile benchmark
 benchmark: sub-src-src-pro-benchmark_ordered
 install:install_subtargets  FORCE
 
@@ -304,5 +304,5 @@ distdir: sub-src-src-pro-distdir FORCE
 
 sub-src-src-pro-distdir: FORCE
 	@test -d src/ || mkdir -p src/
-	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovUI-linux/src/src.pro ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/src
+	cd src/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/kirill/1MATE_ROV_2025/RovFiles/RovUI-linux/src/src.pro ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/src
 

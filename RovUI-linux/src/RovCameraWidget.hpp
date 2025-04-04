@@ -21,4 +21,5 @@ private:
 
     QScopedPointer<QMediaPlayer> m_player;
     QScopedPointer<QVideoWidget> m_videoWidget;
+    const QUrl m_streamUrl{"rtsp://192.168.1.6/stream=0"};
 };
