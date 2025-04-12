@@ -76,6 +76,7 @@ namespace rov {
         uint8_t debugFlag = 0;
         int8_t manipulatorRotation = 0; //! -100/100
         int8_t manipulatorOpenClose = 0; //! -1 close/+1 open;
+        int8_t pumpPower = 0; //! 0/100
         uint8_t regulators = 0; //! 1st bit - depth;
         float desiredDepth = 0.0f;
         float desiredYaw = 0.0f;
@@ -106,6 +107,7 @@ namespace rov {
             cameraRotation[1] = 0;
             cameraRotation[2] = 0;
             manipulatorOpenClose = 0;
+            pumpPower = 0;
             regulators = 0;
             desiredDepth = 0;
             desiredYaw = 0;
@@ -147,6 +149,7 @@ namespace rov {
             read_bytes(msg, i, cameraRotation[1]);
             read_bytes(msg, i, cameraRotation[2]);
             read_bytes(msg, i, manipulatorOpenClose);
+            read_bytes(msg, i, pumpPower);
             read_bytes(msg, i, regulators);
             read_bytes(msg, i, desiredDepth);
 
@@ -188,6 +191,7 @@ namespace rov {
             read_bytes(msg, i, cameraRotation[1]);
             read_bytes(msg, i, cameraRotation[2]);
             read_bytes(msg, i, manipulatorOpenClose);
+            read_bytes(msg, i, pumpPower);
             read_bytes(msg, i, regulators);
             read_bytes(msg, i, desiredDepth);
             read_bytes(msg, i, desiredYaw);
@@ -196,7 +200,7 @@ namespace rov {
             //SerialUSB.print("\t"); SerialUSB.print(cameraRotation[0]);
             //SerialUSB.print("\t"); SerialUSB.print(cameraRotation[1]);
             //SerialUSB.print("\t"); SerialUSB.print(cameraRotation[2]);
-            SerialUSB.println();
+            //SerialUSB.println();
 
             uint16_t currentCrc = calculateCRC((const char *)msg, i);
 

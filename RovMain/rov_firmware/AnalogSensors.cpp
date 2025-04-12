@@ -48,6 +48,15 @@ void AnalogSensors::update() {
     }
 }
 
+void AnalogSensors::set_power(int state) {
+    if (state = 1) {
+        Serial.write('A');
+    }
+    else {
+        Serial.write('B');
+    }
+}
+
 double AnalogSensors::getVoltage() {
     return inst().m_voltage;
 }

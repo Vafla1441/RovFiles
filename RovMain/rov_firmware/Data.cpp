@@ -28,6 +28,7 @@ void rov::prvt::swap_endian_for(RovControl & rc) {
 
     rc.desiredDepth = swap_endian(rc.desiredDepth);
     rc.manipulatorOpenClose = swap_endian(rc.manipulatorOpenClose);
+    rc.pumpPower = swap_endian(rc.pumpPower);
     rc.manipulatorRotation = swap_endian(rc.manipulatorRotation);
     rc.regulators = swap_endian(rc.regulators);
 

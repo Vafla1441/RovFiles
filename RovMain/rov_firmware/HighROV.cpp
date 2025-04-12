@@ -77,6 +77,7 @@ void HighROV::run() {
         RotaryCameras::set_angle(config::servos::pwm_a2,  constrain(control.cameraRotation[2], -1, 1) * 3.0);
         RotaryCameras::select_cam(control.cameraIndex == 1 ? true : false);
         Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
+        AnalogSensors::set_power(control.pumpPower);
     } else {
         debug(control);
     }
