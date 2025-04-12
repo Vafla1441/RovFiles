@@ -17,7 +17,8 @@ void setup() {
 
     delay(100);
 
-    SerialUSB.begin(115200);
+    Serial.begin(9600);
+    // SerialUSB.begin(115200);
     // Serial.begin(115200);
     // Serial1.begin(115200);
 

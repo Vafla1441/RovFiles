@@ -193,9 +193,9 @@ namespace rov {
             read_bytes(msg, i, desiredYaw);
             read_bytes(msg, i, cameraIndex);
 
-            SerialUSB.print("\t"); SerialUSB.print(cameraRotation[0]);
-            SerialUSB.print("\t"); SerialUSB.print(cameraRotation[1]);
-            SerialUSB.print("\t"); SerialUSB.print(cameraRotation[2]);
+            //SerialUSB.print("\t"); SerialUSB.print(cameraRotation[0]);
+            //SerialUSB.print("\t"); SerialUSB.print(cameraRotation[1]);
+            //SerialUSB.print("\t"); SerialUSB.print(cameraRotation[2]);
             SerialUSB.println();
 
             uint16_t currentCrc = calculateCRC((const char *)msg, i);

@@ -15,7 +15,7 @@ rov::RovControl control;
 rov::RovTelimetry telimetry;
 
 void HighROV::init() {
-    SerialUSB.println("HighROV init!");
+    //SerialUSB.println("HighROV init!");
 
     pinMode(LED_BUILTIN, OUTPUT);
     analogWrite(LED_BUILTIN, 100);

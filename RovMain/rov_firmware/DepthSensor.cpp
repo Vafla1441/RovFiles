@@ -7,7 +7,7 @@ bool DepthSensor::init() {
     bool ok = ds.sensor.init();
 
     if (!ok) {
-        SerialUSB.println("Depth sensor init failed!");
+        //SerialUSB.println("Depth sensor init failed!");
         return false;
     }
 
