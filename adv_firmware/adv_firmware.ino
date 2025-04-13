@@ -1,6 +1,6 @@
 #define PHSensorPin  A2    //dissolved oxygen sensor analog output pin to arduino mainboard
 #define VREF 5.0    //for arduino uno, the ADC reference is the AVCC, that is 5.0V(TYP)
-#define OFFSET 0.00  //zero drift compensation
+#define OFFSET -0.43  //zero drift compensation
 
 #define SCOUNT  30           // sum of sample point
 int analogBuffer[SCOUNT];    //store the analog value in the array, readed from ADC
@@ -15,7 +15,7 @@ void setup()
 {
     pinMode(PHSensorPin,INPUT);
     Serial.begin(9600);
-    pinMode(3, OUTPUT);
+    pinMode(2, OUTPUT);
     pinMode(4, OUTPUT);
 }
 
@@ -47,11 +47,11 @@ void loop()
    if (Serial.available() > 0) {
      z = char(Serial.read());
      if (z == 'A'){
-       digitalWrite(3, LOW);
+       digitalWrite(2, LOW);
        digitalWrite(4, LOW);
      }
      if (z == 'B'){
-       digitalWrite(3, HIGH);
+       digitalWrite(2, HIGH);
      }
      if (z == 'C'){
        digitalWrite(4, HIGH);

@@ -304,12 +304,16 @@ class ROVClient:
                     print("\nTelemetry received:")
                     print(f"Depth: {telemetry.depth:.2f} m")
                     print(
-                        f"Attitude: Yaw={telemetry.yaw:.1f}°, Pitch={telemetry.pitch:.1f}°, Roll={telemetry.roll:.1f}°")
+                        f"Attitude: Yaw={telemetry.yaw:.1f}°, "
+                        f"Pitch={telemetry.pitch:.1f}°, "
+                        f"Roll={telemetry.roll:.1f}°")
                     print(
-                        f"Power: Voltage={telemetry.voltmeter:.2f} V, Current={telemetry.ammeter:.2f} A")
+                        f"Power: Voltage={telemetry.voltmeter:.2f} V, "
+                        f"Current={telemetry.ammeter:.2f} A")
                     print(f"Temperature: {telemetry.temperature:.1f}°C")
                     print(
-                        f"Manipulator: Angle={telemetry.manipulatorAngle}, State={telemetry.manipulatorState}")
+                        f"Manipulator: Angle={telemetry.manipulatorAngle}, "
+                        f"State={telemetry.manipulatorState}")
                     print(f"Camera: Index={telemetry.cameraIndex}")
 
                 time.sleep(0.1)  # ~10Hz loop
