@@ -1,43 +1,32 @@
 import Networking as nt
-import time
+client = nt.ROVClient(rov_ip="192.168.1.5", rov_port=3020,
+                      local_ip="0.0.0.0", local_port=3010)
 
+# Send control command
+control = nt.RovControl(
+    axisX=50,  # -100 to 100
+    axisY=0,
+    axisZ=-30,
+    axisW=0,
+    cameraRotation=(20, -10),  # Two camera angles
+    thrusterPower=(50, 50, 0, 0, 0, 0, 0, 0, 0, 0),
+    debugFlag=0,
+    manipulatorRotation=50,
+    manipulatorOpenClose=1,  # 1 = open, -1 = close
+    regulators=1,  # Bit flags
+    desiredDepth=2.5,  # meters
+    desiredYaw=180.0,  # degrees
+    cameraIndex=1  # 0 or 1
+)
 
-def main():
-    # Настройки подключения (должны совпадать с настройками ROV)
-    ROV_IP = "192.168.1.5"  # IP адрес ROV
-    ROV_PORT = 3020         # Порт ROV
+# Send command
+client.send_control(control)
 
-    # Создаем клиент
-    client = nt.ROVClient(ROV_IP, ROV_PORT)
-    # Отправляем hello сообщение
-    client.send_hello()
-    # Создаем команду управления
-    control = nt.RovControl(
-        axisX=50,          # Движение вперед (0-100)
-        axisY=0,           # Боковое движение (-100 - 100)
-        axisZ=0,           # Вертикальное движение (-100 - 100)
-        axisW=0,           # Вращение (-100 - 100)
-        cameraRotation=(0, 0, 0),  # Поворот камер
-        thrusterPower=(0,) * 10,
-        debugFlag=0,
-        cameraIndex=0       # Выбор камеры 0
-    )
+# Receive telemetry
+telemetry, success = client.receive_telemetry()
+if success:
+    print(f"Current depth: {telemetry.depth} meters")
+    print(f"Battery voltage: {telemetry.voltmeter}V")
 
-    while True:
-        # Отправляем команду управления
-        if not client.send_control(control):
-            print("Failed to send control command")
-
-            # Получаем телеметрию
-        telemetry = client.receive_telemetry()
-        if telemetry:
-            print(f"Depth: {telemetry.depth:.2f}m, "
-                  f"Temp:{telemetry.temperature:.1f}C, "
-                  f"Voltage: {telemetry.voltmeter:.1f}V, """
-                  f"Current: {telemetry.ammeter:.1f}A")
-
-        time.sleep(0.1)  # 10 Hz update rate
-
-
-if __name__ == "__main__":
-    main()
+# Close when done
+client.close()
