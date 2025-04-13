@@ -35,10 +35,11 @@ void AnalogSensors::update() {
 
     //resultVoltage /= ANALOG_SAMPLES_COUNT;
     resultAmperage /= ANALOG_SAMPLES_COUNT;
-
-    Serial.setTimeout(50);
-    v = Serial.readString();
-    x = v.toFloat();
+    if (Serial.available() > 0){
+      Serial.setTimeout(50);
+      v = Serial.readString();
+      x = v.toFloat();
+    }
     sensors.m_voltage = x;
     sensors.m_amperage = resultAmperage;
 
