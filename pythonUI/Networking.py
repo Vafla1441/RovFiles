@@ -17,11 +17,12 @@ class RovControl(NamedTuple):
     axisY: int = 0  # -100/100
     axisZ: int = 0  # -100/100
     axisW: int = 0  # -100/100
-    cameraRotation: Tuple[int, int] = (0, 0)  # -100/100 for each
+    cameraRotation: Tuple[int, int, int] = (0, 0, 0)  # -100/100 for each
     thrusterPower: Tuple[int, ...] = (0,) * 10  # -100/100 for each
     debugFlag: int = 0  # 0 or 1
     manipulatorRotation: int = 0  # -100/100
     manipulatorOpenClose: int = 0  # -1 close/+1 open
+    pumpPower: int = 0
     regulators: int = 0  # bit flags
     desiredDepth: float = 0.0
     desiredYaw: float = 0.0
@@ -117,7 +118,9 @@ class ROVClient:
         msg.extend(struct.pack('>b', control.manipulatorRotation))
         msg.extend(struct.pack('>b', control.cameraRotation[0]))
         msg.extend(struct.pack('>b', control.cameraRotation[1]))
+        msg.extend(struct.pack('>b', control.cameraRotation[2]))
         msg.extend(struct.pack('>b', control.manipulatorOpenClose))
+        msg.extend(struct.pack('>b', control.pumpPower))
         msg.extend(struct.pack('>B', control.regulators))
         msg.extend(struct.pack('>f', control.desiredDepth))
         msg.extend(struct.pack('>f', control.desiredYaw))
@@ -282,11 +285,12 @@ class ROVClient:
                     axisY=axis_val,
                     axisZ=0,
                     axisW=0,
-                    cameraRotation=(0, 0),
+                    cameraRotation=(0, 0, 0),
                     thrusterPower=(axis_val, axis_val, 0, 0, 0, 0, 0, 0, 0, 0),
                     debugFlag=0,
                     manipulatorRotation=0,
                     manipulatorOpenClose=1 if self.sequence % 20 < 10 else -1,
+                    pumpPower=0,
                     regulators=1 if self.sequence % 40 < 20 else 0,
                     desiredDepth=1.0,
                     desiredYaw=0.0,
