@@ -17,10 +17,9 @@ def main():
         axisY=0,           # Боковое движение (-100 - 100)
         axisZ=0,           # Вертикальное движение (-100 - 100)
         axisW=0,           # Вращение (-100 - 100)
-        cameraRotation=(0, 0),  # Поворот камер
+        cameraRotation=(0, 0, 0),  # Поворот камер
         thrusterPower=(0,) * 10,
         debugFlag=0,
-        desiredDepth=1.5,   # Желаемая глубина 1.5 метра
         cameraIndex=0       # Выбор камеры 0
     )
 

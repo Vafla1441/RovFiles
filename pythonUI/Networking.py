@@ -21,14 +21,12 @@ class RovControl:
     axisY: int = 0
     axisZ: int = 0
     axisW: int = 0
-    cameraRotation: Tuple[int, int] = (0, 0)
+    cameraRotation: Tuple[int, int] = (0, 0, 0)
     thrusterPower: Tuple[int, ...] = (0,) * 10
     debugFlag: int = 0
     manipulatorRotation: int = 0
     manipulatorOpenClose: int = 0
     regulators: int = 0
-    desiredDepth: float = 0.0
-    desiredYaw: float = 0.0
 
     # v2 fields
     cameraIndex: int = 0
@@ -114,10 +112,9 @@ class ROVClient:
         buffer.extend(struct.pack('>b', control.manipulatorRotation))
         buffer.extend(struct.pack('>b', control.cameraRotation[0]))
         buffer.extend(struct.pack('>b', control.cameraRotation[1]))
+        buffer.extend(struct.pack('>b', control.cameraRotation[2]))
         buffer.extend(struct.pack('>b', control.manipulatorOpenClose))
         buffer.extend(struct.pack('>B', control.regulators))
-        buffer.extend(struct.pack('>f', control.desiredDepth))
-        buffer.extend(struct.pack('>f', control.desiredYaw))
         buffer.extend(struct.pack('>B', control.cameraIndex))
 
         # Calculate CRC
