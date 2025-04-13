@@ -26,6 +26,7 @@ class RovControl:
     debugFlag: int = 0
     manipulatorRotation: int = 0
     manipulatorOpenClose: int = 0
+    pumpPower: int = 0
     regulators: int = 0
 
     # v2 fields
@@ -114,6 +115,7 @@ class ROVClient:
         buffer.extend(struct.pack('>b', control.cameraRotation[1]))
         buffer.extend(struct.pack('>b', control.cameraRotation[2]))
         buffer.extend(struct.pack('>b', control.manipulatorOpenClose))
+        buffer.extend(struct.pack('>b', control.pumpPower))
         buffer.extend(struct.pack('>B', control.regulators))
         buffer.extend(struct.pack('>B', control.cameraIndex))
 
