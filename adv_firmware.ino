@@ -16,6 +16,7 @@ void setup()
     pinMode(PHSensorPin,INPUT);
     Serial.begin(9600);
     pinMode(3, OUTPUT);
+    pinMode(4, OUTPUT);
 }
 
 void loop()
@@ -46,11 +47,15 @@ void loop()
    if (Serial.available() > 0) {
      z = char(Serial.read());
      if (z == 'A'){
-       digitalWrite(6, HIGH);
+       digitalWrite(3, LOW);
+       digitalWrite(4, LOW);
      }
      if (z == 'B'){
-       digitalWrite(6, LOW);
+       digitalWrite(3, HIGH);
      }
+     if (z == 'C'){
+       digitalWrite(4, HIGH);
+    }
    }
 }
 
