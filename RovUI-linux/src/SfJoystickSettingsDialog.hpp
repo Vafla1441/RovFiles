@@ -56,6 +56,9 @@ public:
     int lazerButton();
     void setLazerButton(int button);
 
+    int stopButton();
+    void setStopButton(int button);
+
     int fiftyButton();
     void setFiftyButton(int button);
 
@@ -86,6 +89,7 @@ private:
     QScopedPointer<QComboBox> m_closeManipulatorList;
     QScopedPointer<QComboBox> m_pumpButtonList;
     QScopedPointer<QComboBox> m_lazerButtonList;
+    QScopedPointer<QComboBox> m_stopButtonList;
     QScopedPointer<QComboBox> m_fiftyButtonList;
     QScopedPointer<QComboBox> m_twentyFiveButtonList;
     QScopedPointer<QComboBox> m_rotateManipulatorList;
@@ -115,6 +119,7 @@ private:
     int m_closeButton;
     int m_pumpButton;
     int m_lazerButton;
+    int m_stopButton;
     int m_fiftyButton;
     int m_twentyFiveButton;
     int m_cameraSelectButton;

@@ -95,12 +95,16 @@ void SfJoystick::timerEvent(QTimerEvent*)
 
         bool lazerButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->lazerButton());
         bool pumpButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->pumpButton());
+        bool stopButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->stopButton());
 
-        if (lazerButton) {
-            RovSingleton::instance()->control().pumpLazerButton = 2*(RovSingleton::instance()->control().pumpLazerButton != 2);
+        if (stopButton) {
+            RovSingleton::instance()->control().pumpLazerButton = 0;
         }
         else if (pumpButton) {
-            RovSingleton::instance()->control().pumpLazerButton = 1*(RovSingleton::instance()->control().pumpLazerButton != 1);
+            RovSingleton::instance()->control().pumpLazerButton = 1;
+        }
+        else if (lazerButton) {
+            RovSingleton::instance()->control().pumpLazerButton = 2;
         }
 
         bool fiftyButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->fiftyButton());
@@ -112,7 +116,7 @@ void SfJoystick::timerEvent(QTimerEvent*)
                 flag = false;
                 qInfo() << "Установленио ограничение в 50% тяги";
             }
-        } 
+        }
         else if (twentyFiveButton) {
             RovSingleton::instance()->setThrustScaleFactor(0.25f);
             if (flag) {
