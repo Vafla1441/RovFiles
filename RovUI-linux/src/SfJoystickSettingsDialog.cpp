@@ -16,6 +16,8 @@ SfJoystickSettingsDialog::SfJoystickSettingsDialog(QWidget* parent)
     , m_servoZList(new QComboBox(this))
     , m_openManipulatorList(new QComboBox(this))
     , m_closeManipulatorList(new QComboBox(this))
+    , m_pumpButtonList(new QComboBox(this))
+    , m_lazerButtonList(new QComboBox(this))
     , m_fiftyButtonList(new QComboBox(this))
     , m_twentyFiveButtonList(new QComboBox(this))
     , m_rotateManipulatorList(new QComboBox(this))
@@ -224,6 +226,32 @@ void SfJoystickSettingsDialog::setCloseButton(int button)
     m_settings->endGroup();
 }
 
+int SfJoystickSettingsDialog::pumpButton()
+{
+    return m_pumpButton;
+}
+
+void SfJoystickSettingsDialog::setPumpButton(int button)
+{
+    m_settings->beginGroup("Joystick");
+    m_settings->setValue("JoystickPumpButton", button);
+    m_pumpButton = button;
+    m_settings->endGroup();
+}
+
+int SfJoystickSettingsDialog::lazerButton()
+{
+    return m_lazerButton;
+}
+
+void SfJoystickSettingsDialog::setLazerButton(int button)
+{
+    m_settings->beginGroup("Joystick");
+    m_settings->setValue("JoystickLazerButton", button);
+    m_lazerButton = button;
+    m_settings->endGroup();
+}
+
 int SfJoystickSettingsDialog::fiftyButton()
 {
     return m_fiftyButton;
@@ -297,8 +325,10 @@ void SfJoystickSettingsDialog::readSettings()
 
     m_openButton = m_settings->value("JoystickOpenButton", 2).toInt();
     m_closeButton = m_settings->value("JoystickCloseButton", 3).toInt();
-    m_fiftyButton = m_settings->value("fiftyButton", 4).toInt();
-    m_twentyFiveButton = m_settings->value("twentyFiveButton", 5).toInt();
+    m_pumpButton = m_settings->value("pumpButton", 4).toInt();
+    m_pumpButton = m_settings->value("lazerButton", 5).toInt();
+    m_fiftyButton = m_settings->value("fiftyButton", 6).toInt();
+    m_twentyFiveButton = m_settings->value("twentyFiveButton", 7).toInt();
     m_cameraSelectButton = m_settings->value("JoystickCameraSelectButton", 0).toInt();
 
     m_settings->endGroup();
@@ -347,6 +377,8 @@ void SfJoystickSettingsDialog::createLayout()
     createBox(m_rotateManipulatorList.data());
     createButtonBox(m_openManipulatorList.data());
     createButtonBox(m_closeManipulatorList.data());
+    createButtonBox(m_pumpButtonList.data());
+    createButtonBox(m_lazerButtonList.data());
     createButtonBox(m_fiftyButtonList.data());
     createButtonBox(m_twentyFiveButtonList.data());
     createButtonBox(m_cameraSelectButtonList.data());
@@ -361,6 +393,8 @@ void SfJoystickSettingsDialog::createLayout()
     addToLayout(m_rotateManipulatorList.data(), QString(tr("Поворот манипулятора:")), layout, m_manipulatorInv.data());
     addButtonsToLayout(m_openManipulatorList.data(), QString(tr("Открыть манипулятор:")), layout);
     addButtonsToLayout(m_closeManipulatorList.data(), QString(tr("Закрыть манипулятор:")), layout);
+    addButtonsToLayout(m_pumpButtonList.data(), QString(tr("Насосить:")), layout);
+    addButtonsToLayout(m_lazerButtonList.data(), QString(tr("Лазер:")), layout);
     addButtonsToLayout(m_fiftyButtonList.data(), QString(tr("Удержание 50%:")), layout);
     addButtonsToLayout(m_twentyFiveButtonList.data(), QString(tr("Удержание 25%:")), layout);
     addButtonsToLayout(m_cameraSelectButtonList.data(), QString(tr("Переключить камеру:")), layout);
@@ -377,6 +411,8 @@ void SfJoystickSettingsDialog::createLayout()
     m_rotateManipulatorList.data()->setCurrentIndex(static_cast<int>(manipulatorAxis()));
     m_openManipulatorList.data()->setCurrentIndex(static_cast<int>(m_openButton));
     m_closeManipulatorList.data()->setCurrentIndex(static_cast<int>(m_closeButton));
+    m_pumpButtonList.data()->setCurrentIndex(static_cast<int>(m_pumpButton));
+    m_lazerButtonList.data()->setCurrentIndex(static_cast<int>(m_lazerButton));
     m_fiftyButtonList.data()->setCurrentIndex(static_cast<int>(m_fiftyButton));
     m_twentyFiveButtonList.data()->setCurrentIndex(static_cast<int>(m_twentyFiveButton));
     m_cameraSelectButtonList.data()->setCurrentIndex(static_cast<int>(m_cameraSelectButton));
@@ -443,6 +479,14 @@ void SfJoystickSettingsDialog::createConnections()
 
     QObject::connect(m_closeManipulatorList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
         this->setCloseButton(index);
+    });
+
+    QObject::connect(m_pumpButtonList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
+        this->setPumpButton(index);
+    });
+
+    QObject::connect(m_lazerButtonList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
+        this->setLazerButton(index);
     });
 
     QObject::connect(m_fiftyButtonList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {

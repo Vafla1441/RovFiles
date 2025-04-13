@@ -43,6 +43,8 @@ private:
     int m_manipulatorRotate = 0;
     int m_openManipulator = 0;
     int m_closeManipulator = 0;
+    int m_pumpButton = 0;
+    int m_lazerButton = 0;
     int m_fiftyButton = 0;
     int m_twentyFiveButton = 0;
     bool m_camSelectOldState = false;

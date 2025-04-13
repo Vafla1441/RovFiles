@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-#include "variant.h"
+// #include "variant.h"
 
 namespace config {
     /* pinout */

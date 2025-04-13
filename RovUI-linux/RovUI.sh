@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-export LD_LIBRARY_PATH=SFML-2.4.1/lib/
+# Установка путей к библиотекам
+export LD_LIBRARY_PATH=/usr/local/lib:SFML-2.4.1/lib/:$LD_LIBRARY_PATH
 
-./src/RovUI
+./src/RovUI 

@@ -21,6 +21,7 @@ struct RovControl {
     quint8 debugFlag = 0;
     qint8 manipulatorRotation = 0; //! -100/100
     qint8 manipulatorOpenClose = 0; //! -1 close/+1 open;
+    qint8 pumpLazerButton = 0;
     quint8 regulators = 0; //! 1st bit - depth;
     qint8 cameraIndex = 0;
     
@@ -45,6 +46,7 @@ struct RovControl {
             in << c;
         }
         in << manipulatorOpenClose;
+        in << pumpLazerButton;
         in << regulators;
         in << desiredDepth;
         in << calculateCRC(ba.data(), ba.size());
@@ -78,6 +80,7 @@ struct RovControl {
             in << c;
         }
         in << manipulatorOpenClose;
+        in << pumpLazerButton;
         in << regulators;
         in << desiredDepth;
 
@@ -87,9 +90,9 @@ struct RovControl {
 
         in << calculateCRC(ba.data(), ba.size());
 
-        qDebug() << "\t" << cameraRotation[0]
-                 << "\t" << cameraRotation[1]
-                 << "\t" << cameraRotation[2];
+        // qDebug() << "\t" << cameraRotation[0]
+        //          << "\t" << cameraRotation[1]
+        //          << "\t" << cameraRotation[2];
         return ba;
     }
 };

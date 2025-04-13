@@ -93,6 +93,16 @@ void SfJoystick::timerEvent(QTimerEvent*)
         RovSingleton::instance()->control().manipulatorRotation = m_manipulatorRotate;
         RovSingleton::instance()->control().manipulatorOpenClose = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->manipulatorOpenButton()) - sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->manipulatorCloseButton());
 
+        bool lazerButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->lazerButton());
+        bool pumpButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->pumpButton());
+
+        if (lazerButton) {
+            RovSingleton::instance()->control().pumpLazerButton = 2*(RovSingleton::instance()->control().pumpLazerButton != 2);
+        }
+        else if (pumpButton) {
+            RovSingleton::instance()->control().pumpLazerButton = 1*(RovSingleton::instance()->control().pumpLazerButton != 1);
+        }
+
         bool fiftyButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->fiftyButton());
         bool twentyFiveButton = sf::Joystick::isButtonPressed(0, m_joystickSettingsDialog.data()->twentyFiveButton());
         static bool flag = true;
