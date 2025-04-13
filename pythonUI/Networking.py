@@ -56,7 +56,11 @@ class RovTelemetry:
 
 class ROVClient:
     def __init__(self, remote_ip: str, remote_port: int, local_ip:
+<<<<<<< HEAD
                  str = "192.168.1.4", local_port: int = 3010):
+=======
+                 str = "0.0.0.0", local_port: int = 0):
+>>>>>>> 6112cbfa170bebed0d8d2138851e527601cd6a8c
         self.remote_addr = (remote_ip, remote_port)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((local_ip, local_port))
@@ -213,4 +217,8 @@ class ROVClient:
             self.sock.sendto(buffer, self.remote_addr)
             return True
         except socket.error:
+<<<<<<< HEAD
             return False
+=======
+            return False
+>>>>>>> 6112cbfa170bebed0d8d2138851e527601cd6a8c

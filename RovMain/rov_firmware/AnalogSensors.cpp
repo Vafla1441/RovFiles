@@ -1,12 +1,14 @@
 #include "AnalogSensors.h"
 #include "Config.h"
 #include "Arduino.h"
+String v;
+float x;
 
 void AnalogSensors::init() {
     using namespace config::analog;
     auto &sensors = inst();
 
-    pinMode(voltmeter_pin, INPUT);
+    //pinMode(voltmeter_pin, INPUT);
     pinMode(ammeter_pin, INPUT);
 }
 
@@ -14,32 +16,48 @@ void AnalogSensors::update() {
     using namespace config::analog;
     auto &sensors = inst();
 
-    int rawVoltage = analogRead(voltmeter_pin);
+    //int rawVoltage = analogRead(voltmeter_pin);
     int rawAmperage = analogRead(ammeter_pin);
 
-    float curVoltage = round(rawVoltage * (voltage_multiplier * 100.0)) / 100.0;
+    //float curVoltage = round(rawVoltage * (voltage_multiplier * 100.0)) / 100.0;
     float curAmperage = round((rawAmperage - amperage_deflection) * (amperage_multiplier * 100.0)) / 100.0;
 
-    sensors.m_voltage_samples[sensors.m_counter] = curVoltage;
+    //sensors.m_voltage_samples[sensors.m_counter] = curVoltage;
     sensors.m_amperage_samples[sensors.m_counter] = curAmperage;
 
-    float resultVoltage = 0.0;
+    //float resultVoltage = 0.0;
     float resultAmperage = 0.0;
 
     for (int i = 0; i < ANALOG_SAMPLES_COUNT; i++) {
-        resultVoltage += sensors.m_voltage_samples[i];
+        //resultVoltage += sensors.m_voltage_samples[i];
         resultAmperage += sensors.m_amperage_samples[i];
     }
 
-    resultVoltage /= ANALOG_SAMPLES_COUNT;
+    //resultVoltage /= ANALOG_SAMPLES_COUNT;
     resultAmperage /= ANALOG_SAMPLES_COUNT;
-
-    sensors.m_voltage = resultVoltage;
+    if (Serial.available() > 0){
+      Serial.setTimeout(50);
+      v = Serial.readString();
+      x = v.toFloat();
+    }
+    sensors.m_voltage = x;
     sensors.m_amperage = resultAmperage;
 
     sensors.m_counter++;
     if (sensors.m_counter >= ANALOG_SAMPLES_COUNT) {
         sensors.m_counter = 0;
+    }
+}
+
+void AnalogSensors::set_power(int state) {
+    if (state == 1) {
+        Serial.write('B');
+    }
+    if (state == 2) {
+        Serial.write('C');
+    }
+    if (state == 0) {
+        Serial.write('A');
     }
 }
 

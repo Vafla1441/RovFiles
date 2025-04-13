@@ -6,6 +6,7 @@ class AnalogSensors {
 public:
     static void init();
     static void update();
+    static void set_power(int state);
 
     static double getVoltage();
     static double getAmperage();
