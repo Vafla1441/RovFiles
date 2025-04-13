@@ -49,11 +49,14 @@ void AnalogSensors::update() {
 }
 
 void AnalogSensors::set_power(int state) {
-    if (state = 1) {
-        Serial.write('A');
-    }
-    else {
+    if (state == 1) {
         Serial.write('B');
+    }
+    if (state == 2) {
+        Serial.write('C');
+    }
+    if (state == 0) {
+        Serial.write('A');
     }
 }
 
