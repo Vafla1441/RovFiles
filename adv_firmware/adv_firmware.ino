@@ -1,6 +1,16 @@
+#include <FastLED.h>
+
+#define LED_PIN     6     // Пин, к которому подключена лента
+#define NUM_LEDS    3    // Количество светодиодов в ленте
+#define BRIGHTNESS  255   // Яркость (0-255)
+#define LED_TYPE    WS2812B
+#define COLOR_ORDER GRB   // Порядок цветов (может отличаться для разных лент)
+
+CRGB leds[NUM_LEDS];
+
 #define PHSensorPin  A2    //dissolved oxygen sensor analog output pin to arduino mainboard
 #define VREF 5.0    //for arduino uno, the ADC reference is the AVCC, that is 5.0V(TYP)
-#define OFFSET 0.00  //zero drift compensation
+#define OFFSET -0.43  //zero drift compensation
 
 #define SCOUNT  30           // sum of sample point
 int analogBuffer[SCOUNT];    //store the analog value in the array, readed from ADC
@@ -10,17 +20,25 @@ int analogBufferIndex = 0,copyIndex = 0;
 float averageVoltage,phValue;
 String phstr;
 char z;
+static uint8_t hue = 0;
+static uint8_t hues = 0;
 
 void setup()
 {
-    pinMode(PHSensorPin,INPUT);
-    Serial.begin(9600);
-    pinMode(3, OUTPUT);
-    pinMode(4, OUTPUT);
+  pinMode(PHSensorPin,INPUT);
+  Serial.begin(9600);
+  pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  digitalWrite(2, LOW);
+  digitalWrite(4, LOW);
+  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  FastLED.setBrightness(BRIGHTNESS);
 }
 
 void loop()
 {
+   fill_rainbow(leds, NUM_LEDS, hue, 7);  // 7 - шаг изменения оттенка
+   FastLED.show();
    static unsigned long analogSampleTimepoint = millis();
    if(millis()-analogSampleTimepoint > 30U)     //every 30 milliseconds,read the analog value from the ADC
    {
@@ -47,15 +65,23 @@ void loop()
    if (Serial.available() > 0) {
      z = char(Serial.read());
      if (z == 'A'){
-       digitalWrite(3, LOW);
+       digitalWrite(2, LOW);
        digitalWrite(4, LOW);
      }
      if (z == 'B'){
-       digitalWrite(3, HIGH);
+       digitalWrite(2, HIGH);
      }
      if (z == 'C'){
        digitalWrite(4, HIGH);
     }
+   }
+   hues++;
+   if (hues > 5) {
+    hues = 0;
+    hue++;
+   }
+   if (hue > 255) {
+    hue = 0;
    }
 }
 
