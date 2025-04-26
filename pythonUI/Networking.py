@@ -208,8 +208,7 @@ class RovClient:
                     cameraRotation=(self.joystick.values["camera_rotation"][0], 
                                     self.joystick.values["camera_rotation"][1],
                                     self.joystick.values["camera_rotation"][2]),
-                    # thrusterPower=(100*self.joystick.values["scale_power"],) * 10,
-                    thrusterPower=(0,) * 10,
+                    thrusterPower=(0,0,0,0,0,0,0,0,0,0),
                     debugFlag=0,
                     manipulatorRotation=self.joystick.values["manipulator_rotation"],
                     manipulatorOpenClose=self.joystick.values["manipulator_open_close"],
@@ -222,7 +221,6 @@ class RovClient:
                 result = self.send_control(control)
                 if result != RovControlErrorCode.NoError:
                     self.log(f"Ошибка отправки пакета: {result.name}")
-
                 time.sleep(0.1)
         finally:
             self.close()

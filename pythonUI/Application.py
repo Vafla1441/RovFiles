@@ -27,6 +27,7 @@ class RovUI:
     def start_client(self):
         try:
             self.client = RovClient(add_log=self.ui_callback)
+            threading.Thread(target=self.start_ui, daemon=True).start()
             self.client.run()
         except Exception as e:
             print(f"Ошибка клиента: {e}", file=sys.stderr)
@@ -61,8 +62,6 @@ class RovUI:
         try:
             client_thread = threading.Thread(target=self.start_client, daemon=True)
             client_thread.start()
-
-            self.start_ui()
             
             while self.running.is_set():
                 client_thread.join(timeout=0.1)

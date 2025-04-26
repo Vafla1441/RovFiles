@@ -1,15 +1,15 @@
 {
-    "axis_x": 2,
-    "axis_y": 2,
-    "axis_z": 0,
-    "axis_w": 0,
-    "manipulator_rotation": 5,
-    "camera_rotation": [0, 0, 0],
-    "manipulator_open": 0,
+    "axis_x": 1,
+    "axis_y": 0,
+    "axis_z": 2,
+    "axis_w": 3,
+    "manipulator_rotation": 6,
+    "camera_rotation": [5, 7, 4],
+    "manipulator_open": 5,
     "manipulator_close": 0,
-    "twenty_power": 0,
-    "fifty_power": 0,
-    "pump": 0,
-    "laser": 0,
-    "stop_polnagr": 0
+    "twenty_power": 4,
+    "fifty_power": 7,
+    "pump": 3,
+    "laser": 1,
+    "stop_polnagr": 2
 }
