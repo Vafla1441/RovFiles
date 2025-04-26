@@ -1,0 +1,15 @@
+{
+    "axis_x": 2,
+    "axis_y": 2,
+    "axis_z": 0,
+    "axis_w": 0,
+    "manipulator_rotation": 5,
+    "camera_rotation": [0, 0, 0],
+    "manipulator_open": 0,
+    "manipulator_close": 0,
+    "twenty_power": 0,
+    "fifty_power": 0,
+    "pump": 0,
+    "laser": 0,
+    "stop_polnagr": 0
+}
