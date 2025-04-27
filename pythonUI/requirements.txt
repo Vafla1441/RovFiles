@@ -1,0 +1,13 @@
+threaded
+queue
+os-sys
+tkinter
+pillow
+opencv-python
+json
+pygame
+collection
+datetime
+glob
+pyserial
+socket
