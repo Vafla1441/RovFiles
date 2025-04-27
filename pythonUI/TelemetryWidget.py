@@ -99,8 +99,8 @@ class TelemetryWidget(tk.Frame):
                       padding=4)
     
     def _update_telemetry(self):
-        data = self.client.receive_telemetry()
-        if data:
+        data, success = self.client.receive_telemetry()
+        if success:
             self.telemetry_vars['depth'].set(f"{data.depth:.2f} м")
             self.telemetry_vars['pitch'].set(f"{data.pitch:.2f}")
             self.telemetry_vars['yaw'].set(f"{data.yaw:.2f}")

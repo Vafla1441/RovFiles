@@ -36,7 +36,7 @@ class RovTelemetry(NamedTuple):
     pitch: float = 0.0  # -180/180
     yaw: float = 0.0  # 0-360
     roll: float = 0.0  # -180/180
-    ammeter: float = 0.0
+    ampermeter: float = 0.0
     voltmeter: float = 0.0
     regulatorsFeedback: int = 0
     manipulatorAngle: int = 0
@@ -206,7 +206,7 @@ class RovClient:
         pitch = struct.unpack('>f', data[4:8])[0]
         yaw = struct.unpack('>f', data[8:12])[0]
         roll = struct.unpack('>f', data[12:16])[0]
-        ammeter = struct.unpack('>f', data[16:20])[0]
+        ampermeter = struct.unpack('>f', data[16:20])[0]
         voltmeter = struct.unpack('>f', data[20:24])[0]
         regulators = data[24]
         manip_angle = struct.unpack('>b', data[25:26])[0]
@@ -226,7 +226,7 @@ class RovClient:
             pitch=pitch,
             yaw=yaw,
             roll=roll,
-            ammeter=ammeter,
+            ampermeter=ampermeter,
             voltmeter=voltmeter,
             regulatorsFeedback=regulators,
             manipulatorAngle=manip_angle,
@@ -254,7 +254,7 @@ class RovClient:
         pos += 4
         roll = struct.unpack('>f', data[pos:pos+4])[0]
         pos += 4
-        ammeter = struct.unpack('>f', data[pos:pos+4])[0]
+        ampermeter = struct.unpack('>f', data[pos:pos+4])[0]
         pos += 4
         voltmeter = struct.unpack('>f', data[pos:pos+4])[0]
         pos += 4
@@ -283,7 +283,7 @@ class RovClient:
             pitch=pitch,
             yaw=yaw,
             roll=roll,
-            ammeter=ammeter,
+            ampermeter=ampermeter,
             voltmeter=voltmeter,
             regulatorsFeedback=regulators,
             manipulatorAngle=manip_angle,
