@@ -2,7 +2,6 @@ import socket
 import struct
 from enum import IntEnum
 from typing import Tuple, NamedTuple
-from Joystick import Joystick
 import time
 
 
@@ -50,11 +49,9 @@ class RovHello(NamedTuple):
     version: int = 2
 
 
-class RovClient:
-    def __init__(self, add_log, rov_ip: str = "192.168.1.5", rov_port: int = 3020,
+class ROVClient:
+    def __init__(self, rov_ip: str = "192.168.1.5", rov_port: int = 3020,
                  local_ip: str = "192.168.1.4", local_port: int = 3010):
-        self.joystick = Joystick(add_log)
-        self.log = add_log
         self.rov_addr = (rov_ip, rov_port)
         self.local_addr = (local_ip, local_port)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -64,40 +61,11 @@ class RovClient:
         # Protocol version (should match ROV code)
         self.version = 2
 
+        # Last received telemetry
         self.last_telemetry = RovTelemetry()
 
+        # Sequence counter for debugging
         self.sequence = 0
-
-    def run(self):
-        self.log("Инициализация обмена пакетами")
-
-        try:
-            while True:
-                self.joystick.update()
-                control = RovControl(
-                    axisX=int(self.joystick.values["axis_x"] * (-100)),
-                    axisY=int(self.joystick.values["axis_y"] * 100),
-                    axisZ=int(self.joystick.values["axis_z"] * 100),
-                    axisW=int(self.joystick.values["axis_w"] * (-100)),
-                    cameraRotation=(int(self.joystick.values["camera_rotation"][0]), 
-                                    int(self.joystick.values["camera_rotation"][1]),
-                                    int(self.joystick.values["camera_rotation"][2])),
-                    thrusterPower=(0,0,0,0,0,0,0,0,0,0),
-                    debugFlag=0,
-                    manipulatorRotation=self.joystick.values["manipulator_rotation"],
-                    manipulatorOpenClose=self.joystick.values["manipulator_open_close"],
-                    pumpPower=self.joystick.values["pump_laser"],
-                    regulators=0,
-                    desiredDepth=1.0,
-                    desiredYaw=0.0,
-                    cameraIndex=0
-                )
-                result = self.send_control(control)
-                if result != RovControlErrorCode.NoError:
-                    self.log(f"Ошибка отправки пакета: {result.name}")
-                time.sleep(0.1)
-        finally:
-            self.close()
 
     def close(self):
         self.sock.close()
@@ -303,14 +271,58 @@ class RovClient:
         print(f"Received HELLO from ROV, protocol version: {version}")
         return self.last_telemetry
 
-    def _display_telemetry(self, telemetry: RovTelemetry):
-        self.log("\n=== ROV Telemetry ===")
-        self.log(f"Depth:       {telemetry.depth:7.2f} m")
-        self.log(f"Attitude:    Yaw={telemetry.yaw:6.1f}° Pitch={telemetry.pitch:6.1f}° Roll={telemetry.roll:6.1f}°")
-        self.log(f"Voltage:     {telemetry.voltmeter:7.2f} V")
-        self.log(f"Current:     {telemetry.ampermeter:7.2f} A")
-        self.log(f"Temperature: {telemetry.temperature:7.1f} °C")
-        self.log(f"Manipulator: Angle={telemetry.manipulatorAngle:3} State={telemetry.manipulatorState:2}")
-        self.log(f"Camera:      Index={telemetry.cameraIndex}")
-        self.log(f"Regulators:  {bin(telemetry.regulatorsFeedback)}")
-        self.log("====================")
+    def run_test_sequence(self):
+        """Test sequence that sends control commands and prints telemetry"""
+        print("Starting ROV test sequence...")
+
+        try:
+            while True:
+                self.sequence += 1
+                axis_val = 50 if (self.sequence // 10) % 2 else -50
+
+                control = RovControl(
+                    axisX=axis_val,
+                    axisY=axis_val,
+                    axisZ=0,
+                    axisW=0,
+                    cameraRotation=(0, 0, 0),
+                    thrusterPower=(axis_val, axis_val, 0, 0, 0, 0, 0, 0, 0, 0),
+                    debugFlag=0,
+                    manipulatorRotation=0,
+                    manipulatorOpenClose=1 if self.sequence % 20 < 10 else -1,
+                    pumpPower=0,
+                    regulators=1 if self.sequence % 40 < 20 else 0,
+                    desiredDepth=1.0,
+                    desiredYaw=0.0,
+                    cameraIndex=self.sequence % 2
+                )
+
+                # Send control command
+                result = self.send_control(control)
+                if result != RovControlErrorCode.NoError:
+                    print(f"Error sending control: {result}")
+
+                # Receive telemetry
+                telemetry, success = self.receive_telemetry()
+                if success:
+                    print("\nTelemetry received:")
+                    print(f"Depth: {telemetry.depth:.2f} m")
+                    print(
+                        f"Attitude: Yaw={telemetry.yaw:.1f}°, "
+                        f"Pitch={telemetry.pitch:.1f}°, "
+                        f"Roll={telemetry.roll:.1f}°")
+                    print(
+                        f"Power: Voltage={telemetry.voltmeter:.2f} V, "
+                        f"Current={telemetry.ammeter:.2f} A")
+                    print(f"Temperature: {telemetry.temperature:.1f}°C")
+                    print(
+                        f"Manipulator: Angle={telemetry.manipulatorAngle}, "
+                        f"State={telemetry.manipulatorState}")
+                    print(f"Camera: Index={telemetry.cameraIndex}")
+
+                time.sleep(0.1)  # ~10Hz loop
+
+        except KeyboardInterrupt:
+            print("\nTest sequence stopped")
+        finally:
+            self.close()

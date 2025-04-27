@@ -100,16 +100,16 @@ class TelemetryWidget(tk.Frame):
     
     def _update_telemetry(self):
         data = self.client.receive_telemetry()
-        # if data:
-        #     self.telemetry_vars['depth'].set(f"{data.depth:.2f} м")
-        #     self.telemetry_vars['pitch'].set(f"{data.pitch:.2f}")
-        #     self.telemetry_vars['yaw'].set(f"{data.yaw:.2f}")
-        #     self.telemetry_vars['roll'].set(f"{data.roll:.2f}")
-        #     self.telemetry_vars['voltmeter'].set(f"{data.voltmeter:.2f}")
-        #     self.telemetry_vars['ampermeter'].set(f"{data.ampermeter:.2f} А")
-        #     self.telemetry_vars['regulatorsFeedback'].set(f"{data.regulatorsFeedback}")
-        #     self.telemetry_vars['manipulatorAngle'].set(f"{data.manipulatorAngle}")
-        #     self.telemetry_vars['manipulatorState'].set(f"{data.manipulatorState}")
-        #     self.telemetry_vars['cameraIndex'].set(f"{data.cameraIndex}")
-        #     self.telemetry_vars['temperature'].set(f"{data.temperature:.1f} °C")
+        if data:
+            self.telemetry_vars['depth'].set(f"{data.depth:.2f} м")
+            self.telemetry_vars['pitch'].set(f"{data.pitch:.2f}")
+            self.telemetry_vars['yaw'].set(f"{data.yaw:.2f}")
+            self.telemetry_vars['roll'].set(f"{data.roll:.2f}")
+            self.telemetry_vars['voltmeter'].set(f"{data.voltmeter:.2f}")
+            self.telemetry_vars['ampermeter'].set(f"{data.ampermeter:.2f} А")
+            self.telemetry_vars['regulatorsFeedback'].set(f"{data.regulatorsFeedback}")
+            self.telemetry_vars['manipulatorAngle'].set(f"{data.manipulatorAngle}")
+            self.telemetry_vars['manipulatorState'].set(f"{data.manipulatorState}")
+            self.telemetry_vars['cameraIndex'].set(f"{data.cameraIndex}")
+            self.telemetry_vars['temperature'].set(f"{data.temperature:.1f} °C")
         self.after(500, self._update_telemetry)

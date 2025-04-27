@@ -22,7 +22,7 @@ class UI(tk.Tk):
 
         self.telemetry_frame = TelemetryWidget(self, self.client)
         
-        self.camera_widget = CameraWidget(self, video_source='rtsp://192.168.1.6/stream=0')
+        self.camera_widget = CameraWidget(self, video_source='http://192.168.1.6/mjpeg')
 
         self.log_console_frame = tk.Frame(self, bg="#353535")
         self.log_console = LogConsole(self.log_console_frame)

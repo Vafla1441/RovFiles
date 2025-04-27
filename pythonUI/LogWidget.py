@@ -9,25 +9,39 @@ import threading
 class LogConsole(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-        self.configure(bg="#2E2E2E")
-        
+        self.configure(
+            bg="#2E2E2E",
+            padx=10,
+            pady=10,
+            highlightbackground="#263238",
+            highlightthickness=1
+        )
+
+        ttk.Label(
+            self,
+            text="КОНСОЛЬ",
+            style='ConsoleHeader.TLabel'
+        ).pack(fill='x', pady=(0, 10))
+
         self.text_area = ScrolledText(
             self,
             state='disabled',
             wrap='word',
-            bg="#1E1E1E",
-            fg="#E0E0E0",
+            bg="#263238",
+            fg="#CFD8DC",
             insertbackground='#FF5722',
             selectbackground='#455A64',
             selectforeground='#FFFFFF',
             width=60,
             height=15,
-            font=('Consolas', 9),
+            font=('Segoe UI', 9),
             relief=tk.FLAT,
-            borderwidth=0
+            borderwidth=0,
+            padx=4,
+            pady=4
         )
-        self.text_area.pack(expand=True, fill='both', padx=8, pady=(0,8))
-        
+        self.text_area.pack(expand=True, fill='both')
+
         self.text_area.tag_config('TIME', foreground='#78909C')
         self.text_area.tag_config('INFO', foreground='#8BC34A')
         self.text_area.tag_config('WARNING', foreground='#FFC107')
@@ -35,33 +49,52 @@ class LogConsole(tk.Frame):
         self.text_area.tag_config('DEBUG', foreground='#B39DDB')
         self.text_area.tag_config('SERIAL', foreground='#4FC3F7')
 
-        self.toolbar_frame = tk.Frame(self, bg="#2E2E2E")
-        self.toolbar_frame.pack(fill='x', padx=8, pady=(8, 0))
+        self.toolbar_frame = tk.Frame(self, bg="#37474F", padx=6, pady=4)
+        self.toolbar_frame.pack(fill='x', pady=(10, 0))
 
-        button_style = {
-            'bg': '#37474F',
-            'fg': '#ECEFF1',
-            'activebackground': '#455A64',
-            'activeforeground': '#FFFFFF',
-            'relief': tk.GROOVE,
-            'borderwidth': 0,
-            'font': ('Segoe UI', 9),
-            'padx': 12,
-            'pady': 4
-        }
-        
         tk.Label(
             self.toolbar_frame,
             text="Порт:",
-            bg="#2E2E2E",
-            fg="#E0E0E0",
+            bg="#37474F",
+            fg="#CFD8DC",
             font=('Segoe UI', 9)
         ).pack(side='left', padx=(0, 4))
+
+        self.port_var = tk.StringVar()
+        self.port_combobox = ttk.Combobox(
+            self.toolbar_frame,
+            textvariable=self.port_var,
+            state='readonly',
+            width=18,
+            font=('Segoe UI', 9)
+        )
+        self.port_combobox.pack(side='left', padx=4)
+
+        ttk.Button(
+            self.toolbar_frame,
+            text="Подключить",
+            command=self.toggle_serial_connection,
+            style='Console.TButton'
+        ).pack(side='left', padx=4)
+        
+        ttk.Button(
+            self.toolbar_frame,
+            text="Очистить",
+            command=self.clear_logs,
+            style='Console.TButton'
+        ).pack(side='left', padx=4)
+        
+        ttk.Button(
+            self.toolbar_frame,
+            text="Экспорт",
+            command=self.export_logs,
+            style='Console.TButton'
+        ).pack(side='left', padx=4)
 
         self.status_label = tk.Label(
             self.toolbar_frame,
             text=" Готово ",
-            bg="#2E2E2E",
+            bg="#37474F",
             fg="#78909C",
             font=('Segoe UI', 8),
             anchor='w',
@@ -69,42 +102,64 @@ class LogConsole(tk.Frame):
         )
         self.status_label.pack(side='right', padx=4)
 
-        self.port_var = tk.StringVar()
-        self.port_combobox = ttk.Combobox(
-            self.toolbar_frame,
-            textvariable=self.port_var,
-            state='readonly',
-            width=20,
-            font=('Segoe UI', 9)
-        )
-        self.port_combobox.pack(side='left', padx=4)
+        self._setup_styles()
+
         self.refresh_ports()
-        
-        self.connect_button = tk.Button(
-            self.toolbar_frame,
-            text="Подключиться",
-            command=self.toggle_serial_connection,
-            **button_style
-        )
-        self.connect_button.pack(side='left', padx=4)
-        
-        tk.Button(
-            self.toolbar_frame,
-            text="🗑️ Очистить",
-            command=self.clear_logs,
-            **button_style
-        ).pack(side='left', padx=4)
-        
-        tk.Button(
-            self.toolbar_frame,
-            text="🖹 Экспорт",
-            command=self.export_logs,
-            **button_style
-        ).pack(side='left', padx=4)
-        
+
         self.serial_connection = None
         self.serial_thread = None
         self.running = False
+
+    def _setup_styles(self):
+        style = ttk.Style()
+        style.theme_use('clam')
+        
+        style.configure(
+            'ConsoleHeader.TLabel', 
+            background="#263238",
+            foreground="#FF5722",
+            font=('Segoe UI', 10, 'bold'),
+            padding=4
+        )
+        
+        style.configure(
+            'Console.TButton',
+            background="#263238",
+            foreground="#ECEFF1",
+            bordercolor="#455A64",
+            focuscolor="#FF5722",
+            font=('Segoe UI', 9),
+            padding=4
+        )
+        
+        style.map(
+            'Console.TButton',
+            background=[
+                ('active', '#263238'), 
+                ('disabled', '#455A64')
+            ],
+            foreground=[
+                ('active', '#FF5722'), 
+                ('disabled', '#78909C')
+            ]
+        )
+        
+        style.configure(
+            'TCombobox',
+            fieldbackground="#263238",
+            background="#263238",
+            foreground="#ECEFF1",
+            selectbackground="#455A64",
+            selectforeground="#FFFFFF",
+            bordercolor="#455A64",
+            arrowsize=12
+        )
+        
+        style.map(
+            'TCombobox',
+            fieldbackground=[('readonly', '#263238')],
+            background=[('readonly', '#263238')]
+        )
     
     def refresh_ports(self):
         ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')

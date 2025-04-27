@@ -41,14 +41,7 @@ class RovUI:
             return
             
         self.running.clear()
-        
-        if self.client and hasattr(self.client, 'client'):
-            try:
-                self.client.client.disconnect()
-                self.client.client.loop_stop()
-            except Exception as e:
-                print(f"Отключение MQTT клиента: {e}", file=sys.stderr)
-        
+
         if self.ui:
             try:
                 self.ui.quit()
