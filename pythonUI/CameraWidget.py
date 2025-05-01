@@ -1,11 +1,14 @@
 import tkinter as tk
-import cv2 as cv
 from tkinter import ttk
-from PIL import Image, ImageTk
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst, GLib
+import threading
 
 class CameraWidget(tk.Frame):
-    def __init__(self, parent, video_source, *args, **kwargs):
+    def __init__(self, parent, add_log, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+        self.log = add_log
         self.configure(
             bg="#2E2E2E", 
             padx=10, 
@@ -14,8 +17,12 @@ class CameraWidget(tk.Frame):
             highlightthickness=1
         )
         
-        self.video_source = video_source
-        self.cap = None
+        Gst.init(None)
+        pipeline_str = (
+            'rtspsrc location="rtsp://root:12345@192.168.1.6/stream=0" latency=0 ! '
+            'rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false'
+        )
+        self.pipeline = Gst.parse_launch(pipeline_str)
         
         self.header = ttk.Label(
             self, 
@@ -58,15 +65,14 @@ class CameraWidget(tk.Frame):
         )
         self.connect_btn.pack(side=tk.LEFT, padx=5)
         
-        self.disconnect_btn = ttk.Button(
+        self.connect_btn = ttk.Button(
             self.control_frame, 
             text="Отключить", 
-            command=self.disconnect_camera, 
-            state=tk.DISABLED,
+            command=self.disconnect_camera,
             style='Camera.TButton'
         )
-        self.disconnect_btn.pack(side=tk.LEFT, padx=5)
-        
+        self.connect_btn.pack(side=tk.LEFT, padx=5)
+
         self.status_label = tk.Label(
             self.control_frame,
             bg="#37474F",
@@ -75,8 +81,6 @@ class CameraWidget(tk.Frame):
             text="Камера отключена"
         )
         self.status_label.pack(side=tk.RIGHT, padx=5)
-        
-        self.current_image = None
         
         self._setup_styles()
 
@@ -97,56 +101,22 @@ class CameraWidget(tk.Frame):
         )
 
     def connect_camera(self):
-        try:
-            self.cap = cv.VideoCapture(self.video_source)
-            if not self.cap.isOpened():
-                raise ValueError("Не удалось открыть видеопоток")
-            
-            self.connect_btn.config(state=tk.DISABLED)
-            self.disconnect_btn.config(state=tk.NORMAL)
-            self.status_label.config(text="Камера подключена")
-            
-            self.update_frame()
-            
-        except Exception as e:
-            self.status_label.config(text=f"Ошибка: {str(e)}")
-            if self.cap:
-                self.cap.release()
+        self.log("Подклчаемся к камере")
+        threading.Thread(target=self.run, daemon=True).start()
 
     def disconnect_camera(self):
-        if self.cap:
-            self.cap.release()
-            self.cap = None
-        
-        self.connect_btn.config(state=tk.NORMAL)
-        self.disconnect_btn.config(state=tk.DISABLED)
-        self.status_label.config(text="Камера отключена")
-        
-        self.video_label.config(image='')
+        if self.pipeline:
+            self.log("Отключаемся от камеры")
+            self.pipeline.set_state(Gst.State.NULL)
+            if self.loop:
+                self.loop.quit()
 
-    def update_frame(self):
-        if self.cap and self.cap.isOpened():
-            ret, frame = self.cap.read()
-            
-            if ret:
-                frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-                img = Image.fromarray(frame)
-                
-                img_width = self.video_label.winfo_width()
-                img_height = self.video_label.winfo_height()
-                
-                if img_width > 0 and img_height > 0:
-                    img.thumbnail((img_width, img_height))
-                
-                imgtk = ImageTk.PhotoImage(image=img)
-                
-                self.video_label.imgtk = imgtk
-                self.video_label.config(image=imgtk)
-            
-            self.after(10, self.update_frame)
-        else:
-            self.disconnect_camera()
+    def run(self):
+        self.pipeline.set_state(Gst.State.PLAYING)
+        self.loop = GLib.MainLoop()
+        try:
+            self.loop.run()
+        except KeyboardInterrupt:
+            self.pipeline.set_state(Gst.State.NULL)
+            self.loop.quit()
 
-    def __del__(self):
-        if self.cap:
-            self.cap.release()
