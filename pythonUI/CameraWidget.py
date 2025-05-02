@@ -101,7 +101,7 @@ class CameraWidget(tk.Frame):
         )
 
     def connect_camera(self):
-        self.log("Подклчаемся к камере")
+        self.log("Подключаемся к камере")
         threading.Thread(target=self.run, daemon=True).start()
 
     def disconnect_camera(self):

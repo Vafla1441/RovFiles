@@ -52,7 +52,7 @@ class RovHello(NamedTuple):
 
 class RovClient:
     def __init__(self, add_log, rov_ip: str = "192.168.1.5", rov_port: int = 3020,
-                 local_ip: str = "192.168.1.4", local_port: int = 3010):
+                 local_ip: str = "", local_port: int = 3010):
         self.joystick = Joystick(add_log)
         self.log = add_log
         self.rov_addr = (rov_ip, rov_port)

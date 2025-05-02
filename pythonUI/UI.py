@@ -26,12 +26,12 @@ class UI(tk.Tk):
             'rtspsrc location="rtsp://root:12345@192.168.1.6/stream=0" latency=0 ! '
             'rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false'
         )
-        self.camera_widget = CameraWidget(self)
 
         self.log_console_frame = tk.Frame(self, bg="#353535")
         self.log_console = LogConsole(self.log_console_frame)
         self.log_console.log("Система инициализирована")
 
+        self.camera_widget = CameraWidget(self, self.log_console.log)
 
     def _configure_ui_layout(self):
         self.grid_rowconfigure(0, weight=1)
