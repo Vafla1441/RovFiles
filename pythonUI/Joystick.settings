@@ -4,7 +4,7 @@
     "axis_z": 2,
     "axis_w": 3,
     "manipulator_rotation": 6,
-    "camera_rotation": [5, 7, 4],
+    "camera_rotation": 0,
     "manipulator_open": 5,
     "manipulator_close": 0,
     "twenty_power": 4,

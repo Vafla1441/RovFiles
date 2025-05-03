@@ -16,7 +16,7 @@ class Joystick:
             "axis_z": 0,
             "axis_w": 0,
             "manipulator_rotation": 0,
-            "camera_rotation": [0, 0, 0],
+            "camera_rotation": 0,
             "manipulator_open": 0,
             "manipulator_close": 0,
             "twenty_power": 0,
@@ -31,7 +31,7 @@ class Joystick:
             "axis_z": 0,
             "axis_w": 0,
             "manipulator_rotation": 0,
-            "camera_rotation": [0, 0, 0],
+            "camera_rotation": [0, 0],
             "scale_power": 1.0,
             "manipulator_open_close": 0,
             "pump_laser": 0
@@ -64,10 +64,12 @@ class Joystick:
         self.values['axis_z'] = self.joystick.get_axis(self.mappings['axis_z'])
         self.values['axis_w'] = self.joystick.get_axis(self.mappings['axis_w'])
         
-        self.values['camera_rotation'][0] = self.joystick.get_axis(self.mappings['camera_rotation'][0])
-        self.values['camera_rotation'][1] = self.joystick.get_axis(self.mappings['camera_rotation'][1])
-        self.values['camera_rotation'][2] = self.joystick.get_axis(self.mappings['camera_rotation'][2])
-        
+        for event in pygame.event.get():
+            if event.type == pygame.JOYHATMOTION:
+                hat_x, hat_y = event.value
+                self.values['camera_rotation'][0] = hat_x
+                self.values['camera_rotation'][1] = hat_y
+
         power_buttons_pressed = False
         button_actions = [
             "manipulator_open", "manipulator_close", 

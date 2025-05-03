@@ -80,8 +80,8 @@ class RovClient:
                     axisZ=int(self.joystick.values["axis_z"] * 100),
                     axisW=int(self.joystick.values["axis_w"] * (-100)),
                     cameraRotation=(int(self.joystick.values["camera_rotation"][0]), 
-                                    int(self.joystick.values["camera_rotation"][1]),
-                                    int(self.joystick.values["camera_rotation"][2])),
+                                    int(0), 
+                                    int(self.joystick.values["camera_rotation"][1])),
                     thrusterPower=(0,0,0,0,0,0,0,0,0,0),
                     debugFlag=0,
                     manipulatorRotation=self.joystick.values["manipulator_rotation"],
@@ -167,7 +167,6 @@ class RovClient:
             self.sock.sendto(msg, self.rov_addr)
             return RovControlErrorCode.NoError
         except Exception as e:
-            print(f"Error sending control: {e}")
             return RovControlErrorCode.WrongDataSize
 
     def receive_telemetry(self, timeout: float = 0.1):
