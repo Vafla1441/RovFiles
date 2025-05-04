@@ -61,14 +61,16 @@ class Joystick:
 
         self.values['axis_x'] = self.joystick.get_axis(self.mappings['axis_x'])
         self.values['axis_y'] = self.joystick.get_axis(self.mappings['axis_y'])
-        self.values['axis_z'] = self.joystick.get_axis(self.mappings['axis_z'])
+        self.values['axis_z'] = self.joystick.get_axis(self.mappings['axis_z']) 
         self.values['axis_w'] = self.joystick.get_axis(self.mappings['axis_w'])
         
         for event in pygame.event.get():
             if event.type == pygame.JOYHATMOTION:
                 hat_x, hat_y = event.value
-                self.values['camera_rotation'][0] = hat_x
+                self.values['manipulator_rotation'] = hat_x
+                self.values['camera_rotation'][0] = hat_y
                 self.values['camera_rotation'][1] = hat_y
+                self.log(self.values['camera_rotation'][0], self.values['camera_rotation'][1])
 
         power_buttons_pressed = False
         button_actions = [
@@ -76,7 +78,8 @@ class Joystick:
             "pump", "laser", "stop_polnagr", 
             "twenty_power", "fifty_power"
         ]
-        
+
+
         for action in button_actions:
             button_id = self.mappings[action]
             if self.joystick.get_button(button_id):
@@ -90,7 +93,7 @@ class Joystick:
 
     def _handle_button_press(self, button_name):
         if button_name == "manipulator_close":
-            self.values["manipulator_open_close"] = 0
+            self.values["manipulator_open_close"] = -1
         elif button_name == "manipulator_open":
             self.values["manipulator_open_close"] = 1
 

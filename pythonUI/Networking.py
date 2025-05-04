@@ -80,8 +80,8 @@ class RovClient:
                     axisZ=int(self.joystick.values["axis_z"] * 100),
                     axisW=int(self.joystick.values["axis_w"] * (-100)),
                     cameraRotation=(int(self.joystick.values["camera_rotation"][0]), 
-                                    int(0), 
-                                    int(self.joystick.values["camera_rotation"][1])),
+                                    int(self.joystick.values["camera_rotation"][0]), 
+                                    int(self.joystick.values["camera_rotation"][0])),
                     thrusterPower=(0,0,0,0,0,0,0,0,0,0),
                     debugFlag=0,
                     manipulatorRotation=self.joystick.values["manipulator_rotation"],
@@ -299,7 +299,6 @@ class RovClient:
             return self.last_telemetry
 
         version = struct.unpack('>b', data[1:2])[0]
-        print(f"Received HELLO from ROV, protocol version: {version}")
         return self.last_telemetry
 
     def _display_telemetry(self, telemetry: RovTelemetry):
