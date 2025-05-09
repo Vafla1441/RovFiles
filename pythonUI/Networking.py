@@ -75,10 +75,10 @@ class RovClient:
             while True:
                 self.joystick.update()
                 control = RovControl(
-                    axisX=int(self.joystick.values["axis_x"] * (-100)),
-                    axisY=int(self.joystick.values["axis_y"] * 100),
-                    axisZ=int(self.joystick.values["axis_z"] * 100),
-                    axisW=int(self.joystick.values["axis_w"] * (-100)),
+                    axisX=int(self.joystick.values["axis_x"] * self.joystick.values["scale_power"] * (-100)),
+                    axisY=int(self.joystick.values["axis_y"] * self.joystick.values["scale_power"] * 100),
+                    axisZ=int(self.joystick.values["axis_z"] * self.joystick.values["scale_power"] * 100),
+                    axisW=int(self.joystick.values["axis_w"] * self.joystick.values["scale_power"] * (-100)),
                     cameraRotation=(int(self.joystick.values["camera_rotation"][0]), 
                                     int(self.joystick.values["camera_rotation"][0]), 
                                     int(self.joystick.values["camera_rotation"][0])),

@@ -1,260 +1,235 @@
-import struct
-from enum import Enum, IntEnum
-from typing import NamedTuple, Tuple
+#pragma once
 
-class RovTelimetryErrorCode(IntEnum):
-    NoError = 0
-    WrongCrc = 1
-    WrongDataSize = 2
+#include "Crc.hpp"
+#include <QDataStream>
+#include <QIODevice>
+#include <QtCore>
+#include <QDebug>
 
-class RovControl(NamedTuple):
-    header_control: int = 0xAC  # only v2 and later
-    version: int = 0
-    axisX: int = 0       # -100/100
-    axisY: int = 0       # -100/100
-    axisZ: int = 0       # -100/100
-    axisW: int = 0       # -100/100
-    desiredDepth: float = 0.0
-    desiredYaw: float = 0.0
-    cameraRotation: Tuple[int, int, int] = (0, 0, 0)  # qint8[3]
-    thrusterPower: Tuple[int, ...] = (0,) * 10        # qint8[10]
-    debugFlag: int = 0       # quint8
-    manipulatorRotation: int = 0  # -100/100
-    manipulatorOpenClose: int = 0  # -1 close/+1 open
-    pumpLazerButton: int = 0
-    regulators: int = 0     # 1st bit - depth
-    cameraIndex: int = 0
+struct RovControl {
+    static const uint8_t header_control = 0xAC; // only v2 and later
+    qint8 version = 0;
 
-    def to_ranger_control_msg_v1(self) -> bytes:
-        data = bytearray()
-        
-        # Pack basic control data
-        data.extend(struct.pack('>b', self.axisX))
-        data.extend(struct.pack('>b', self.axisY))
-        data.extend(struct.pack('>b', self.axisZ))
-        data.extend(struct.pack('>b', self.axisW))
-        data.extend(struct.pack('>B', self.debugFlag))
-        
-        # Pack thruster power (first 6)
-        for t in self.thrusterPower[:6]:
-            data.extend(struct.pack('>b', t))
-        
-        # Pack manipulator and camera data
-        data.extend(struct.pack('>b', self.manipulatorRotation))
-        for c in self.cameraRotation:
-            data.extend(struct.pack('>b', c))
-        
-        data.extend(struct.pack('>b', self.manipulatorOpenClose))
-        data.extend(struct.pack('>b', self.pumpLazerButton))
-        data.extend(struct.pack('>B', self.regulators))
-        data.extend(struct.pack('>f', self.desiredDepth))
-        
-        # Calculate and append CRC
-        crc = self._calculate_crc(data)
-        data.extend(struct.pack('>H', crc))
-        
-        return bytes(data)
+    qint8 axisX = 0; //! -100/100;
+    qint8 axisY = 0; //! -100/100;
+    qint8 axisZ = 0; //! -100/100;
+    qint8 axisW = 0; //! -100/100;
+    float desiredDepth = 0.0f;
+    float desiredYaw = 0.0f;
+    qint8 cameraRotation[3] = { 0, 0, 0 };
+    qint8 thrusterPower[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    quint8 debugFlag = 0;
+    qint8 manipulatorRotation = 0; //! -100/100
+    qint8 manipulatorOpenClose = 0; //! -1 close/+1 open;
+    quint8 regulators = 0; //! 1st bit - depth;
+    qint8 cameraIndex = 0;
+    
+    QByteArray toRangerControlMsgV1()
+    {
+        QByteArray ba;
 
-    def to_ranger_control_msg_v2(self) -> bytes:
-        data = bytearray()
-        self.version = 2
-        
-        # Header and version
-        data.extend(struct.pack('>B', self.header_control))
-        data.extend(struct.pack('>b', self.version))
-        
-        # Basic control data (same as v1)
-        data.extend(struct.pack('>b', self.axisX))
-        data.extend(struct.pack('>b', self.axisY))
-        data.extend(struct.pack('>b', self.axisZ))
-        data.extend(struct.pack('>b', self.axisW))
-        data.extend(struct.pack('>B', self.debugFlag))
-        
-        # All 10 thrusters
-        for t in self.thrusterPower:
-            data.extend(struct.pack('>b', t))
-        
-        # Manipulator and camera data
-        data.extend(struct.pack('>b', self.manipulatorRotation))
-        for c in self.cameraRotation:
-            data.extend(struct.pack('>b', c))
-        
-        data.extend(struct.pack('>b', self.manipulatorOpenClose))
-        data.extend(struct.pack('>b', self.pumpLazerButton))
-        data.extend(struct.pack('>B', self.regulators))
-        data.extend(struct.pack('>f', self.desiredDepth))
-        
-        # V2 additions
-        data.extend(struct.pack('>f', self.desiredYaw))
-        data.extend(struct.pack('>b', self.cameraIndex))
-        
-        # Calculate and append CRC
-        crc = self._calculate_crc(data)
-        data.extend(struct.pack('>H', crc))
-        
-        return bytes(data)
+        QDataStream in(&ba, QIODevice::WriteOnly);
+        in.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
-    @staticmethod
-    def _calculate_crc(data: bytes) -> int:
-        """CRC-16/CCITT-FALSE implementation matching the C++ version"""
-        crc = 0xFFFF
-        poly = 0x1021
-        
-        for byte in data:
-            crc ^= (byte << 8)
-            for _ in range(8):
-                if crc & 0x8000:
-                    crc = (crc << 1) ^ poly
-                else:
-                    crc <<= 1
-                crc &= 0xFFFF
-        
-        return crc
-
-class RovTelimetry(NamedTuple):
-    header_telemetry: int = 0xAE  # only v2 and later
-    header: int = 0
-    version: int = 0
-    depth: float = 0.0
-    temperature: float = 0.0
-    pitch: float = 0.0    # -180/180
-    yaw: float = 0.0      # 0-360
-    roll: float = 0.0     # -180/180
-    ammeter: float = 0.0
-    voltmeter: float = 0.0
-    regulatorsFeedback: int = 0  # quint8
-    manipulatorAngle: int = 0    # ???
-    manipulatorState: int = 0    # -1 close/+1 open
-    cameraIndex: int = 0
-
-    @classmethod
-    def from_ranger_telimetry_msg_v1(cls, data: bytes) -> Tuple['RovTelimetry', RovTelimetryErrorCode]:
-        if len(data) < 34:  # Minimum expected size
-            return cls(), RovTelimetryErrorCode.WrongDataSize
-        
-        try:
-            # Unpack basic telemetry data
-            depth = struct.unpack('>f', data[0:4])[0]
-            pitch = struct.unpack('>f', data[4:8])[0]
-            yaw = struct.unpack('>f', data[8:12])[0]
-            roll = struct.unpack('>f', data[12:16])[0]
-            ammeter = struct.unpack('>f', data[16:20])[0]
-            voltmeter = struct.unpack('>f', data[20:24])[0]
-            regulatorsFeedback = data[24]
-            manipulatorAngle = struct.unpack('>b', data[25:26])[0]
-            manipulatorState = struct.unpack('>b', data[26:27])[0]
-            
-            # Check CRC
-            received_crc = struct.unpack('>H', data[-2:])[0]
-            calculated_crc = RovControl._calculate_crc(data[:-2])
-            
-            if received_crc != calculated_crc:
-                return cls(), RovTelimetryErrorCode.WrongCrc
-            
-            return cls(
-                depth=depth,
-                pitch=pitch,
-                yaw=yaw,
-                roll=roll,
-                ammeter=ammeter,
-                voltmeter=voltmeter,
-                regulatorsFeedback=regulatorsFeedback,
-                manipulatorAngle=manipulatorAngle,
-                manipulatorState=manipulatorState
-            ), RovTelimetryErrorCode.NoError
-            
-        except struct.error:
-            return cls(), RovTelimetryErrorCode.WrongDataSize
-
-    @classmethod
-    def from_ranger_telimetry_msg_v2(cls, data: bytes) -> Tuple['RovTelimetry', RovTelimetryErrorCode]:
-        if len(data) < 36:  # Minimum expected size
-            return cls(), RovTelimetryErrorCode.WrongDataSize
-        
-        try:
-            pos = 0
-            header = data[pos]
-            pos += 1
-            version = struct.unpack('>b', data[pos:pos+1])[0]
-            pos += 1
-            depth = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            pitch = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            yaw = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            roll = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            ammeter = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            voltmeter = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            regulatorsFeedback = data[pos]
-            pos += 1
-            manipulatorAngle = struct.unpack('>b', data[pos:pos+1])[0]
-            pos += 1
-            manipulatorState = struct.unpack('>b', data[pos:pos+1])[0]
-            pos += 1
-            cameraIndex = data[pos]
-            pos += 1
-            temperature = struct.unpack('>f', data[pos:pos+4])[0]
-            pos += 4
-            
-            # Check CRC
-            received_crc = struct.unpack('>H', data[-2:])[0]
-            calculated_crc = RovControl._calculate_crc(data[:-2])
-            
-            if received_crc != calculated_crc:
-                return cls(), RovTelimetryErrorCode.WrongCrc
-            
-            return cls(
-                header=header,
-                version=version,
-                depth=depth,
-                temperature=temperature,
-                pitch=pitch,
-                yaw=yaw,
-                roll=roll,
-                ammeter=ammeter,
-                voltmeter=voltmeter,
-                regulatorsFeedback=regulatorsFeedback,
-                manipulatorAngle=manipulatorAngle,
-                manipulatorState=manipulatorState,
-                cameraIndex=cameraIndex
-            ), RovTelimetryErrorCode.NoError
-            
-        except struct.error:
-            return cls(), RovTelimetryErrorCode.WrongDataSize
-
-    @staticmethod
-    def from_error_to_string(ec: RovTelimetryErrorCode) -> str:
-        error_map = {
-            RovTelimetryErrorCode.NoError: "No error",
-            RovTelimetryErrorCode.WrongCrc: "CRC mismatch",
-            RovTelimetryErrorCode.WrongDataSize: "Wrong data size"
+        in << axisX;
+        in << axisY;
+        in << axisZ;
+        in << axisW;
+        in << debugFlag;
+        for (int i = 0; i < 6; i++) {
+            qint8 t = thrusterPower[i];
+            in << t;
         }
-        return error_map.get(ec, "Unknown error")
+        in << manipulatorRotation;
+        for (qint8 c : cameraRotation) {
+            in << c;
+        }
+        in << manipulatorOpenClose;
+        in << regulators;
+        in << desiredDepth;
+        in << calculateCRC(ba.data(), ba.size());
 
-class RovHello:
-    header_hello: int = 0xAA
-    header: int = 0
-    version: int = 0
+        return ba;
+    }
 
-    @staticmethod
-    def get_version(data: bytes) -> int:
-        if len(data) < 4:  # header + version + crc
-            return 0
-        
-        try:
-            header = data[0]
-            version = struct.unpack('>b', data[1:2])[0]
-            
-            # Check CRC
-            received_crc = struct.unpack('>H', data[-2:])[0]
-            calculated_crc = RovControl._calculate_crc(data[:-2])
-            
-            if received_crc == calculated_crc:
-                return version
-            return 0
-        except struct.error:
-            return 0
+    QByteArray toRangerControlMsgV2()
+    {
+        QByteArray ba;
+
+        QDataStream in(&ba, QIODevice::WriteOnly);
+        in.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+        version = 2;
+
+        // begin v1
+        in << header_control;
+        in << version;
+        in << axisX;
+        in << axisY;
+        in << axisZ;
+        in << axisW;
+        in << debugFlag;
+        for (int i = 0; i < 10; i++) {
+            qint8 t = thrusterPower[i];
+            in << t;
+        }
+        in << manipulatorRotation;
+        for (qint8 c : cameraRotation) {
+            in << c;
+        }
+        in << manipulatorOpenClose;
+        in << regulators;
+        in << desiredDepth;
+
+        // begin v2
+        in << desiredYaw;
+        in << cameraIndex;
+
+        in << calculateCRC(ba.data(), ba.size());
+
+        qDebug() << "\t" << cameraRotation[0]
+                 << "\t" << cameraRotation[1]
+                 << "\t" << cameraRotation[2];
+        return ba;
+    }
+};
+Q_DECLARE_METATYPE(RovControl)
+
+struct RovTelimetry {
+    enum class RovTelimetryErrorCode : int {
+        NoError = 0,
+        WrongCrc = 1,
+        WrongDataSize = 2,
+    };
+
+    static const uint8_t header_telemetry = 0xAE; // only v2 and later
+
+    uint8_t header = 0;
+    int8_t version = 0;
+    float depth = 0.0f;
+    float temperature = 0.0f;
+    float pitch = 0.0f; //! -180/180;
+    float yaw = 0.0f; //! 0 - 360;
+    float roll = 0.0f; //! -180/180;
+    float ammeter = 0.0f;
+    float voltmeter = 0.0f;
+    quint8 regulatorsFeedback = 0;
+    qint8 manipulatorAngle = 0; //! ???
+    qint8 manipulatorState = 0; //! -1 close/+1 open;
+    qint8 cameraIndex = 0;
+
+    RovTelimetryErrorCode fromRangerTelimetryMsgV1(QByteArray& ba)
+    {
+        QDataStream out(&ba, QIODevice::ReadOnly);
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+        out >> depth;
+        out >> pitch;
+        out >> yaw;
+        out >> roll;
+        out >> ammeter;
+        out >> voltmeter;
+        out >> regulatorsFeedback;
+        out >> manipulatorAngle;
+        out >> manipulatorState;
+        qint16 crc = 0;
+        out >> crc;
+
+        qint16 currentCrc = calculateCRC(ba.data(), ba.size() - 2);
+
+        if (currentCrc != crc) {
+            depth = 0.0f;
+            pitch = 0.0f;
+            yaw = 0.0f;
+            roll = 0.0f;
+            voltmeter = 0.0f;
+            ammeter = 0.0f;
+            regulatorsFeedback = 0;
+            manipulatorAngle = 0;
+            manipulatorState = 0;
+            return RovTelimetryErrorCode::WrongCrc;
+        }
+
+        return RovTelimetryErrorCode::NoError;
+    }
+
+    RovTelimetryErrorCode fromRangerTelimetryMsgV2(QByteArray& ba)
+    {
+        QDataStream out(&ba, QIODevice::ReadOnly);
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+        out >> header;
+        out >> version;
+        out >> depth;
+        out >> pitch;
+        out >> yaw;
+        out >> roll;
+        out >> ammeter;
+        out >> voltmeter;
+        out >> regulatorsFeedback;
+        out >> manipulatorAngle;
+        out >> manipulatorState;
+        out >> cameraIndex;
+        out >> temperature;
+        qint16 crc = 0;
+        out >> crc;
+
+        qint16 currentCrc = calculateCRC(ba.data(), ba.size() - 2);
+
+        if (currentCrc != crc) {
+            depth = 0.0f;
+            pitch = 0.0f;
+            yaw = 0.0f;
+            roll = 0.0f;
+            voltmeter = 0.0f;
+            ammeter = 0.0f;
+            regulatorsFeedback = 0;
+            manipulatorAngle = 0;
+            manipulatorState = 0;
+            cameraIndex = 0;
+            return RovTelimetryErrorCode::WrongCrc;
+        }
+
+        return RovTelimetryErrorCode::NoError;
+    }
+
+    static QString fromErrorToString(RovTelimetryErrorCode ec)
+    {
+        QMap<RovTelimetryErrorCode, QString> ec2str;
+        ec2str[RovTelimetryErrorCode::NoError] = "No error";
+        ec2str[RovTelimetryErrorCode::WrongCrc] = "CRC missmatch";
+        ec2str[RovTelimetryErrorCode::WrongDataSize] = "Wrong data size";
+
+        return ec2str[ec];
+    }
+};
+Q_DECLARE_METATYPE(RovTelimetry)
+
+struct RovHello {
+    static const uint8_t header_hello = 0xAA;
+
+    uint8_t header = 0;
+    int8_t version = 0;
+
+    static int getVersion(QByteArray& ba)
+    {
+        QDataStream out(&ba, QIODevice::ReadOnly);
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+        RovHello rh;
+
+        out >> rh.header;
+        out >> rh.version;
+
+        qint16 crc = 0;
+        out >> crc;
+
+        qint16 currentCrc = calculateCRC(ba.data(), ba.size() - 2);
+        if (currentCrc == crc) {
+            return rh.version;
+        }
+
+        return 0;
+    }
+};
+Q_DECLARE_METATYPE(RovHello)
