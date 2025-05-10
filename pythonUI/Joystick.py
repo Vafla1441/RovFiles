@@ -73,6 +73,7 @@ class Joystick:
                 self.log(self.values['camera_rotation'][0], self.values['camera_rotation'][1])
 
         power_buttons_pressed = False
+        manipulator_buttons_pressed = False
         button_actions = [
             "manipulator_open", "manipulator_close", 
             "pump", "laser", "stop_polnagr", 
@@ -86,9 +87,14 @@ class Joystick:
                 self._handle_button_press(action)
                 if action in ("twenty_power", "fifty_power"):
                     power_buttons_pressed = True
+                if action in ("manipulator_open", "manipulator_close"):
+                    manipulator_buttons_pressed = True
         
         if not power_buttons_pressed:
             self.values["scale_power"] = 1.0
+
+        if not manipulator_buttons_pressed:
+            self.values["manipulator_open_close"] = 0
 
 
     def _handle_button_press(self, button_name):
