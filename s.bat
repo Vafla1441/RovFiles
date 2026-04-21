@@ -1,0 +1,1 @@
+gst-launch-1.0 udpsrc port=5000 ! application/x-rtp,encoding-name=JPEG,payload=26 ! rtpjpegdepay ! queue max-size-buffers=1 leaky=downstream ! jpegdec ! videoconvert ! autovideosink sync=false
